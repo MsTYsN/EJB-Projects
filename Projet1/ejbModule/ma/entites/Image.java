@@ -27,11 +27,17 @@ public class Image implements Serializable {
 		super();
 	}
 
+	public Image(int id, String url) {
+		super();
+		this.id = id;
+		this.url = url;
+	}
+
 	public Image(String url) {
 		super();
 		this.url = url;
 	}
-	
+
 	public Image(String url, Monument monument) {
 		super();
 		this.url = url;

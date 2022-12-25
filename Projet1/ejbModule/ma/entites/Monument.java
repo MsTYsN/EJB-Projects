@@ -30,15 +30,23 @@ public class Monument implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "createur_id")
 	private Createur createur;
-	/*
-	 * @OneToMany(fetch = FetchType.EAGER, mappedBy = "monument", cascade =
-	 * CascadeType.ALL) private List<Image> images = new ArrayList<>();
-	 */
+	@Transient
+	private List<Image> images = new ArrayList<>();
 
 	private static final long serialVersionUID = 1L;
 
 	public Monument() {
 		super();
+	}
+
+	public Monument(int id, String nom, String adresse, String description, double latitude, double longitude) {
+		super();
+		this.id = id;
+		this.nom = nom;
+		this.adresse = adresse;
+		this.description = description;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 
 	public Monument(String nom, String adresse, String description, double latitude, double longitude) {
@@ -147,10 +155,12 @@ public class Monument implements Serializable {
 		this.createur = createur;
 	}
 
-	/*
-	 * public List<Image> getImages() { return images; }
-	 * 
-	 * public void setImages(List<Image> images) { this.images = images; }
-	 */
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
+	}
 
 }

@@ -1,5 +1,6 @@
 package ma.metier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -9,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import ma.entites.Monument;
+import ma.entites.Image;
 
 @Stateless(name = "Monument")
 public class MonumentEJBImpl implements MonumentLocal, MonumentRemote {
@@ -29,14 +31,33 @@ public class MonumentEJBImpl implements MonumentLocal, MonumentRemote {
 		Monument m = em.find(Monument.class, id);
 		if (m== null)
 			throw new RuntimeException("Monument introvable");
+		Query query = em.createQuery("from Image i where i.monument = :monument");
+		query.setParameter("monument", m);
+		List<Image> images = new ArrayList<>();
+		for(Object o : query.getResultList()) {
+			images.add(new Image(((Image)o).getId(), ((Image)o).getUrl()));
+		}
+		m.setImages(images);
 		return m;
 	}
 
 	@Override
 	@PermitAll
 	public List<Monument> listMonuments() {
+		List<Monument> monuments = new ArrayList<>();
 		Query query = em.createQuery("from Monument");
-		return query.getResultList();
+		for(Object o : query.getResultList()) {
+			Monument m = (Monument)o;
+			Query queryImages = em.createQuery("from Image i where i.monument = :monument");
+			queryImages.setParameter("monument", m);
+			List<Image> images = new ArrayList<>();
+			for(Object i : queryImages.getResultList()) {
+				images.add(new Image(((Image)i).getId(), ((Image)i).getUrl()));
+			}
+			m.setImages(images);
+			monuments.add(m);
+		}
+		return monuments;
 	}
 
 	@Override

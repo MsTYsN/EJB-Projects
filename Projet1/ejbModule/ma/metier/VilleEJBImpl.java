@@ -1,5 +1,6 @@
 package ma.metier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.security.PermitAll;
@@ -8,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import ma.entites.Monument;
 import ma.entites.Ville;
 
 @Stateless(name = "Ville")
@@ -29,14 +31,33 @@ public class VilleEJBImpl implements VilleLocal, VilleRemote {
 		Ville v = em.find(Ville.class, id);
 		if (v == null)
 			throw new RuntimeException("Ville introvable");
+		Query query = em.createQuery("from Monument m where m.ville = :ville");
+		query.setParameter("ville", v);
+		List<Monument> monuments = new ArrayList<>();
+		for(Object o : query.getResultList()) {
+			monuments.add(new Monument(((Monument)o).getId(), ((Monument)o).getNom(), ((Monument)o).getAdresse(), ((Monument)o).getDescription(), ((Monument)o).getLatitude(), ((Monument)o).getLongitude()));
+		}
+		v.setMonuments(monuments);
 		return v;
 	}
 
 	@Override
 	@PermitAll
 	public List<Ville> listVilles() {
+		List<Ville> villes = new ArrayList<>();
 		Query query = em.createQuery("from Ville");
-		return query.getResultList();
+		for(Object o : query.getResultList()) {
+			Ville v = (Ville)o;
+			Query queryMonuments = em.createQuery("from Monument m where m.ville = :ville");
+			queryMonuments.setParameter("ville", v);
+			List<Monument> monuments = new ArrayList<>();
+			for(Object i : queryMonuments.getResultList()) {
+				monuments.add(new Monument(((Monument)i).getId(), ((Monument)i).getNom(), ((Monument)i).getAdresse(), ((Monument)i).getDescription(), ((Monument)i).getLatitude(), ((Monument)i).getLongitude()));
+			}
+			v.setMonuments(monuments);
+			villes.add(v);
+		}
+		return villes;
 	}
 
 	@Override

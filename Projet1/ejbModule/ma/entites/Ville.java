@@ -20,10 +20,8 @@ public class Ville implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String nom;
-	/*
-	 * @OneToMany(fetch = FetchType.EAGER, mappedBy = "ville", cascade =
-	 * CascadeType.ALL) private List<Monument> monuments = new ArrayList<>();
-	 */
+	@Transient
+	private List<Monument> monuments = new ArrayList<>();
 
 	private static final long serialVersionUID = 1L;
 
@@ -52,11 +50,12 @@ public class Ville implements Serializable {
 		this.nom = nom;
 	}
 
-	/*
-	 * public List<Monument> getMonuments() { return monuments; }
-	 * 
-	 * public void setMonuments(List<Monument> monuments) { this.monuments =
-	 * monuments; }
-	 */
+	public List<Monument> getMonuments() {
+		return monuments;
+	}
+
+	public void setMonuments(List<Monument> monuments) {
+		this.monuments = monuments;
+	}
 
 }
