@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+            
+    
+    <wb-module deploy-name="ProjetEARCompte">
+                        
+        
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+                        
+        
+        <dependent-module archiveName="Projet1Web2.war" deploy-path="/" handle="module:/resource/Projet1Web2/Projet1Web2">
+                                    
+            
+            <dependent-object/>
+                                    
+            
+            <dependency-type>uses</dependency-type>
+                                
+        
+        </dependent-module>
+                        
+        
+        <dependent-module archiveName="Projet1.jar" deploy-path="/" handle="module:/resource/Projet1/Projet1">
+                                    
+            
+            <dependent-object/>
+                                    
+            
+            <dependency-type>uses</dependency-type>
+                                
+        
+        </dependent-module>
+        <dependent-module archiveName="Projet1WebWS.war" deploy-path="/" handle="module:/resource/Projet1WebWS/Projet1WebWS">
+            <dependent-object>Module_1671113498541</dependent-object>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+                    
+    
+    </wb-module>
+        
+
+</project-modules>
